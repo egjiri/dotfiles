@@ -1,3 +1,21 @@
+# Path to your oh-my-zsh installation.
+export ZSH=$HOME/.oh-my-zsh
+
+# Set Theme - https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="afowler"
+
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  yarn
+  history
+  last-working-dir
+)
+
+source $ZSH/oh-my-zsh.sh
+
 # ==================== MY ADDITIONS ====================
 
 # Custom key binding for command + arrow keys

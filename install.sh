@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Install ohmyzsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # Install Yarn Packages
 yarn global add rebase-editor
 
