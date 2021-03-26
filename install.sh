@@ -19,3 +19,6 @@ ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 
 # Update the zsh config
 ln -sf ~/dotfiles/.zshrc ~/.zshrc && . ~/.zshrc
+
+# Update the tmux config
+ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
