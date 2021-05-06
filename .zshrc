@@ -37,6 +37,8 @@ export SHOPIFY="/src/github.com/shopify"
 
 # Configure Yarn global path
 export PATH="$(yarn global bin):$PATH"
+# Add Ruby binstabs to path
+export PATH="./bin:$PATH"
 
 # Custom User config
 alias ll="ls -lAhG"
