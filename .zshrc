@@ -47,4 +47,4 @@ alias gitlogs="git log --graph --pretty=format:'%C(auto)%h%d %s %C(green)(%cr) %
 alias gitlog="gitlogs -n 25"
 alias gitme="gitlog --author=Endri -n 10000 | wc -l"
 alias gitbr="git branch -r | grep endri"
-alias rebase-master="git checkout master && git pull && git checkout - && git rebase master"
+alias rebase-main="git checkout main && git pull && git checkout - && git rebase main"
