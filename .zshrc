@@ -37,6 +37,12 @@ export SHOPIFY="/src/github.com/shopify"
 
 # Configure Yarn global path
 export PATH="$(yarn global bin):$PATH"
+# Configure PNPM global path
+export PNPM_HOME="/home/spin/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 # Add Ruby binstabs to path
 export PATH="./bin:$PATH"
 
