@@ -56,3 +56,6 @@ alias gitbr="git branch -r | grep endri"
 alias rebase-main="git stash && git checkout main && git pull && git checkout - && git rebase main && git stash pop"
 alias update-web="dev stop && cd ../shopify && git pull && dev-update && cd ../web && dev-update"
 alias dev-update="dev stop && dev up && dev start"
+
+# Install bazel binaries
+pnpm add -g @bazel/bazelisk @bazel/ibazel @bazel/buildifier > /dev/null
