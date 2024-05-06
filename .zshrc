@@ -58,4 +58,4 @@ alias update-web="dev stop && cd ../shopify && git pull && dev-update && cd ../w
 alias dev-update="dev stop && dev up && dev start"
 
 # Install bazel binaries
-pnpm add -g @bazel/bazelisk @bazel/ibazel @bazel/buildifier > /dev/null
+pnpm add -g @bazel/bazelisk @bazel/ibazel @bazel/buildifier @bazel/buildozer > /dev/null
