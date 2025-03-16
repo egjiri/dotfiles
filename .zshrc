@@ -1,61 +1,75 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+# Set the directory we want to store zinit and plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-# Set Theme - https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="afowler"
+# Download Zinit, if it's not there yet
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  autojump
-  fzf
-  git
-  yarn
-  history
-  last-working-dir
-  zsh-autosuggestions
-  zsh-syntax-highlighting # Note: This plugin must be added last
-)
+# Source/Load zinit
+source "${ZINIT_HOME}/zinit.zsh"
 
-source $ZSH/oh-my-zsh.sh
+# Add in zsh plugins
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
 
-# ==================== MY ADDITIONS ====================
+# Add in snippets
+zinit snippet OMZP::sudo
 
+# Load completions
+autoload -Uz compinit && compinit
+
+# oh-my-posh - Initialize oh-my-posh for zsh in all terminals except the default Apple Terminal and use custom config
+export PATH="$HOME/.local/bin:$PATH"
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  eval "$(oh-my-posh init zsh --config $HOME/dotfiles/oh-my-posh.toml)"
+fi
+
+# Keybindings
+bindkey -e
+bindkey '^[[1;9A' history-search-backward # Command + Up Arrow
+bindkey '^[[1;9B' history-search-forward # Command + Down Arrow
 # Custom key binding for command + arrow keys
-bindkey "^[^[[D" backward-word
-bindkey "^[^[[C" forward-word
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;3C" forward-word
 
-# FZF
-export FZF_BASE=/path/to/fzf/install/dir
-export FZF_DEFAULT_OPTS='--layout=reverse'
-export FZF_DEFAULT_COMMAND='fd --type f'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# History
+HISTSIZE=5000
+HISTFILE=~/.zsh_history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 
-# My Custom Exports
-export SHOPIFY="/src/github.com/shopify"
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 
-# Configure Yarn global path
-export PATH="$(yarn global bin):$PATH"
-# Configure PNPM global path
-export PNPM_HOME="/home/spin/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# Add Ruby binstabs to path
-export PATH="./bin:$PATH"
+# Aliases
+alias ls='ls --color'
+alias vim='nvim'
+alias c='clear'
 
 # Custom User config
 alias ll="ls -lAhG"
-alias reload-zsh="source ~/.zshrc"
 alias gitlogs="git log --graph --pretty=format:'%C(auto)%h%d %s %C(green)(%cr) %C(cyan)[%an]%C(reset)'"
 alias gitlog="gitlogs -n 25"
 alias gitme="gitlog --author=Endri -n 10000 | wc -l"
 alias gitbr="git branch -r | grep endri"
-alias rebase-main="git stash && git checkout main && git pull && git checkout - && git rebase main && git stash pop"
-alias update-web="dev stop && cd ../shopify && git pull && dev-update && cd ../web && dev-update"
-alias dev-update="dev stop && dev up && dev start"
 
-# Install bazel binaries
-pnpm add -g @bazel/bazelisk @bazel/ibazel @bazel/buildifier @bazel/buildozer > /dev/null
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='code'
+fi
